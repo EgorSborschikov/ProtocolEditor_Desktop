@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 
 namespace ProtocolEditor.ViewModel;
@@ -33,6 +34,10 @@ public class Team
 {
     public int TeamId { get; set; }
     public string TeamName { get; set; }
+    public DateTime Time { get; set; }
+    public int Place { get; set; }
+    public int Points { get; set; }
+    public int MinPoints { get; set; }
     public ObservableCollection<Competition> Competitions { get; set; }
 
     public Team()

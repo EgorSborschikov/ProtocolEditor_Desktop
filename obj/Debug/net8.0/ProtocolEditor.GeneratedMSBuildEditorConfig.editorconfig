@@ -22,7 +22,13 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 [/home/egor/Documents/ProtocolEditor/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/egor/Documents/ProtocolEditor/Editor/EditWindow.axaml]
+[/home/egor/Documents/ProtocolEditor/EditorControls/CombineRelay/CombineRelay.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/egor/Documents/ProtocolEditor/EditorControls/CompetitionSummary/CompetitionSummary.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/egor/Documents/ProtocolEditor/EditorControls/RelayByGroup/RelayByGroup.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [/home/egor/Documents/ProtocolEditor/MainWindow.axaml]

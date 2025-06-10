@@ -2,8 +2,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:competitionSummary="clr-namespace:ProtocolEditor.EditorControls.CompetitionSummary"
+        xmlns:relayByGroup="clr-namespace:ProtocolEditor.EditorControls.RelayByGroup"
+        xmlns:combineRelay="clr-namespace:ProtocolEditor.EditorControls.CombineRelay"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ProtocolEditor.MainWindow"
         Title="ProtocolEditor">
-    <Button Name="ToExcelFileEditor" Content="Loading data" Click="ToExcelFileEditor_OnClick"/>
+    <TabControl>
+        <TabItem Header="Сводная ведомость">
+            <competitionSummary:CompetitionSummary />
+        </TabItem>
+        <TabItem Header="Эстафеты по группам">
+            <relayByGroup:RelayByGroup />
+        </TabItem>
+        <TabItem Header="Комбинированная эстафета">
+            <combineRelay:CombineRelay />
+        </TabItem>
+    </TabControl>
 </Window>

@@ -5,6 +5,15 @@
       <map>
         <entry key="App.axaml" value="ProtocolEditor.csproj" />
         <entry key="Editor/EditWindow.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CombineRelay.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CombineRelay/CombineRelay.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CompetitionSummary/CompetitionSummary.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CompetitionSummary/CompetitionSummaryView.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CompetitionSummaryView.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CorrespondenceTable.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/CorrespondenceTable/CorrespondenceTable.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/RelayByGroup.axaml" value="ProtocolEditor.csproj" />
+        <entry key="EditorControls/RelayByGroup/RelayByGroup.axaml" value="ProtocolEditor.csproj" />
         <entry key="MainWindow.axaml" value="ProtocolEditor.csproj" />
         <entry key="Table/Table.axaml" value="ProtocolEditor.csproj" />
         <entry key="Table/TableWindow.axaml" value="ProtocolEditor.csproj" />

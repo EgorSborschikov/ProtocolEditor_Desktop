@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModel"
+             x:Class="ProtocolEditor.EditorControls.RelayByGroup.RelayByGroup"
+             x:DataType="viewModel:Team">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid Grid.Row="0" x:Name="CombinedRelayDataGrid" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding TeamId}"/>
+                <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}"/>
+                <DataGridTextColumn Header="Время" Binding="{Binding Time}"/>
+                <DataGridTextColumn Header="Очки" Binding="{Binding Points}"/>
+                <DataGridTextColumn Header="Место" Binding="{Binding Place}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Добавить команду" Click="AddCombinedRelayTeam_Click" Margin="5"/>
+            <Button Content="Удалить команду" Click="RemoveCombinedRelayTeam_Click" Margin="5"/>
+            <Button Content="Экспорт в Excel" Click="ExportCombinedRelayToExcel_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
