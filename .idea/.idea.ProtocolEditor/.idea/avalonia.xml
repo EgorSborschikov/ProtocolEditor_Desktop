@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="App.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Editor/EditWindow.axaml" value="ProtocolEditor.csproj" />
+        <entry key="MainWindow.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Table/Table.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Table/TableWindow.axaml" value="ProtocolEditor.csproj" />
+      </map>
+    </option>
+    <option name="workingDirectorySpecification" value="SolutionDirectory" />
+  </component>
+</project>
