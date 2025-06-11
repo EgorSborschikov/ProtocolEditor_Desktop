@@ -5,6 +5,7 @@
         xmlns:competitionSummary="clr-namespace:ProtocolEditor.EditorControls.CompetitionSummary"
         xmlns:relayByGroup="clr-namespace:ProtocolEditor.EditorControls.RelayByGroup"
         xmlns:combineRelay="clr-namespace:ProtocolEditor.EditorControls.CombineRelay"
+        xmlns:scoreTable="clr-namespace:ProtocolEditor.EditorControls.ScoreTable"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ProtocolEditor.MainWindow"
         Title="ProtocolEditor">
@@ -17,6 +18,9 @@
         </TabItem>
         <TabItem Header="Комбинированная эстафета">
             <combineRelay:CombineRelay />
+        </TabItem>
+        <TabItem Header="Таблица соответствия очков">
+            <scoreTable:ScoreTable/>
         </TabItem>
     </TabControl>
 </Window>

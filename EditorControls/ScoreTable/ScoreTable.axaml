@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModel"
+             x:Class="ProtocolEditor.EditorControls.ScoreTable.ScoreTable" 
+             x:DataType="viewModel:Team">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid Grid.Row="0" x:Name="ScoreTableDataGrid" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Место" Binding="{Binding Place}"/>
+                <DataGridTextColumn Header="Минимум очков" Binding="{Binding MinPoints}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Добавить запись" Click="AddScoreEntry_Click" Margin="5"/>
+            <Button Content="Удалить запись" Click="RemoveScoreEntry_Click" Margin="5"/>
+            <Button Content="Экспорт в Excel" Click="ExportScoreTableToExcel_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -31,5 +31,8 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/egor/Documents/ProtocolEditor/EditorControls/RelayByGroup/RelayByGroup.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/egor/Documents/ProtocolEditor/EditorControls/ScoreTable/ScoreTable.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/egor/Documents/ProtocolEditor/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
