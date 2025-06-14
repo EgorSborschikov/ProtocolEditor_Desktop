@@ -8,13 +8,13 @@ namespace ProtocolEditor.EditorControls.CompetitionSummary;
 
 public partial class CompetitionSummary : UserControl
 {
-    private EditWindowViewModel viewModel;
+    private CompetitionSummaryViewModel viewModel;
     private int competitionCounter = 0;
     public CompetitionSummary()
     {
         InitializeComponent();
         
-        viewModel = new EditWindowViewModel();
+        viewModel = new CompetitionSummaryViewModel();
         DataContext = viewModel;
         
         CompetitionDataGrid.ItemsSource = viewModel.Teams;
