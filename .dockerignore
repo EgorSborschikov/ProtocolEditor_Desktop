@@ -1,0 +1,8 @@
+**/.dockerignore
+**/.git
+**/.gitignore
+**/.vs
+**/bin
+**/obj
+**/node_modules
+.env
