@@ -82,4 +82,9 @@ public partial class CompetitionSummary : UserControl
             }
         }
     }
+
+    private void SaveChanges_Click(object? sender, RoutedEventArgs e)
+    {
+        throw new System.NotImplementedException();
+    }
 }

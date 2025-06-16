@@ -26,6 +26,7 @@
             <Button Content="Удалить соревнование" Click="RemoveCompetition_Click" Margin="5"/>
             <Button Content="Сортировать по месту" Click="SortByPlace_Click" Margin="5"/>
             <Button Content="Экспорт в Excel" Click="ExportToExcel_Click" Margin="5"/>
+            <Button Content="Сохранить" Click="SaveChanges_Click" Margin="5"/>
         </StackPanel>
     </Grid>
 </UserControl>
