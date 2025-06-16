@@ -200,3 +200,4 @@
 /home/egor/Documents/ProtocolEditor/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/egor/Documents/ProtocolEditor/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/egor/Documents/ProtocolEditor/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
+/home/egor/Documents/ProtocolEditor/bin/Debug/net8.0/Microsoft.Extensions.Configuration.UserSecrets.dll

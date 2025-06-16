@@ -33,24 +33,19 @@ public partial class CompetitionSummary : UserControl
         competitionCounter++;
 
         int insertIndex = 2;
-
-        //int competitionNumber = (CompetitionDataGrid.Columns.Count - 4) / 2 + 1;
+        
         CompetitionDataGrid.Columns.Insert(insertIndex, new DataGridTextColumn
         {
-            Header = $"М",
-            Binding = new Binding($"Competitions[{competitionCounter - 1}].Place") 
-        });
-        CompetitionDataGrid.Columns.Insert(insertIndex + 1, new DataGridTextColumn
-        {
-            Header = $"О",
-            Binding = new Binding($"Competitions[{competitionCounter - 1}].Points")
+            Header = $"Соревнование {competitionCounter}\nМ",
+            Binding = new Binding($"Competitions[{competitionCounter - 1}].Place")
         });
 
-        var competitionHeader = new DataGridTextColumn
+        // Добавляем столбец для "Очки" с заголовком, включающим название соревнования
+        CompetitionDataGrid.Columns.Insert(insertIndex + 1, new DataGridTextColumn
         {
-            Header = $"Соревнование {competitionCounter}"
-        };
-        CompetitionDataGrid.Columns.Insert(insertIndex, competitionHeader);
+            Header = $"Соревнование {competitionCounter}\nО",
+            Binding = new Binding($"Competitions[{competitionCounter - 1}].Points")
+        });
     }
 
     private void SortByPlace_Click(object? sender, RoutedEventArgs e)
@@ -76,11 +71,13 @@ public partial class CompetitionSummary : UserControl
     {
         if (competitionCounter > 0)
         {
-            int lastCompetitionIndex = CompetitionDataGrid.Columns.Count - 3;
-            if (lastCompetitionIndex >= 2)
+            int competitionStartIndex = 2;
+            
+            if (CompetitionDataGrid.Columns.Count > competitionStartIndex + 1)
             {
-                CompetitionDataGrid.Columns.RemoveAt(lastCompetitionIndex + 1);
-                CompetitionDataGrid.Columns.RemoveAt(lastCompetitionIndex);
+                CompetitionDataGrid.Columns.RemoveAt(competitionStartIndex + 1);
+                CompetitionDataGrid.Columns.RemoveAt(competitionStartIndex);
+
                 competitionCounter--;
             }
         }
