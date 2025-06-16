@@ -1,26 +1,23 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+﻿# Этап сборки
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
 WORKDIR /ProtocolEditor
 
-COPY ./*.sln ./
-COPY ./ProtocolEditor/*.csproj ./ProtocolEditor
+# Копирование csproj и восстановление зависимостей
+COPY *.csproj ./
 RUN dotnet restore
 
-COPY . .
-RUN dotnet publish "./ProtocolEditor/ProtocolEditor.csproj" -c Release -o /app/publish
+# Копирование остальных файлов и сборка приложения
+COPY . ./
+RUN dotnet publish -c Debug -o out
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0
-WORKDIR /app
+# Этап времени выполнения
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
-COPY --from=build /app/publish .
+WORKDIR /ProtocolEditor
 
-RUN apt-get update && \
-    apt-get install -y \
-        libx11-dev \
-        libice-dev \
-        libsm-dev \
-        libfontconfig1 \
-        libxext6 \
-        libgl1-mesa-glx \
-        libc6-dev 
+# Копирование собранного приложения из этапа сборки
+COPY --from=build /ProtocolEditor/out .
 
+# Запуск приложения
 ENTRYPOINT ["dotnet", "ProtocolEditor.dll"]
