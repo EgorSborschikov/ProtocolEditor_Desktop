@@ -1,10 +1,18 @@
-version: '3.8'
-
 services:
-  app:
-    build: .
-    container_name: protocol_editor
-    volumes:
-      - .:/ProtocolEditor
+  database:
+    image: postgres:17
+    restart: always
+    container_name: protocol_editor_pg
+    env_file:
+      - ../.env
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME} 
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

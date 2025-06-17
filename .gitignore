@@ -3,4 +3,6 @@ identifier.sqlite
 .idea/
 bin/
 obj/
+.env
 *.gitignore
+docker/pgdata/
