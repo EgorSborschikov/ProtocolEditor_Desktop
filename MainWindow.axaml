@@ -6,21 +6,35 @@
         xmlns:relayByGroup="clr-namespace:ProtocolEditor.EditorControls.RelayByGroup"
         xmlns:combineRelay="clr-namespace:ProtocolEditor.EditorControls.CombineRelay"
         xmlns:scoreTable="clr-namespace:ProtocolEditor.EditorControls.ScoreTable"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" 
+        d:DesignWidth="800" 
+        d:DesignHeight="450"
         x:Class="ProtocolEditor.MainWindow"
         Title="ProtocolEditor">
+    
     <TabControl>
         <TabItem Header="Сводная ведомость">
-            <competitionSummary:CompetitionSummary />
+            <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+                <competitionSummary:CompetitionSummary Width="800" Height="450"/>
+            </Viewbox>
         </TabItem>
+        
         <TabItem Header="Эстафеты по группам">
-            <relayByGroup:RelayByGroup />
+            <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+                <relayByGroup:RelayByGroup Width="800" Height="450"/>
+            </Viewbox>
         </TabItem>
+        
         <TabItem Header="Комбинированная эстафета">
-            <combineRelay:CombineRelay />
+            <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+                <combineRelay:CombineRelay Width="800" Height="450"/>
+            </Viewbox>
         </TabItem>
+        
         <TabItem Header="Таблица соответствия очков">
-            <scoreTable:ScoreTable/>
+            <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+                <scoreTable:ScoreTable Width="800" Height="450"/>
+            </Viewbox>
         </TabItem>
     </TabControl>
 </Window>
