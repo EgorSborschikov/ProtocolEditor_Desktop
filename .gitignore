@@ -1,5 +1,6 @@
 appsettings.json
 identifier.sqlite
-/.idea
-/bin
-/obj
+.idea/
+bin/
+obj/
+*.gitignore
