@@ -2,15 +2,15 @@ APP_NAME=protocol_editor
 
 CONTAINER_NAME=protocol_editor
 
-.PHONY: build run stop
+.PHONY: build run_app stop
 
 build:
-	@echo "Сборка Docker-образа"
-	docker build -t 
+	@echo "Сборка Docker-образа базы данных в фоновом режиме"
+	docker compose --env-file ../.env up -d
 	
-run:
-	@echo "Запуск контейнера..."
-	docker-compose up --build -d
+run_app:
+	@echo "Запуск приложения..."
+	dotnet build && dotnet run
 
 stop:
 	@echo "Остановка контейнера..."
