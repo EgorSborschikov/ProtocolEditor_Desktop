@@ -1,3 +1,5 @@
 appsettings.json
 identifier.sqlite
-.idea
+/.idea
+/bin
+/obj
