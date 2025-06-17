@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProtocolEditor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70cfb13cb423b7440d4182e8ad4e3927e53c189a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f2c18b60bb51b71cd5c064c4749fdb24a2d0dba")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProtocolEditor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProtocolEditor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

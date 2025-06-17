@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModels"
+            x:Class="ProtocolEditor.Views.CompetitionSummary.CompetitionSummary"
+            x:DataType="viewModel:Team"> 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <DataGrid Grid.Row="0" x:Name="CompetitionDataGrid" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding TeamId}"/>
+                <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}"/>
+                <!-- Столбцы для соревнований будут добавляться динамически -->
+                <DataGridTextColumn Header="Очки" />
+                <DataGridTextColumn Header="Место"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Добавить команду" Click="AddTeam_Click" Margin="5"/>
+            <Button Content="Удалить команду" Click="RemoveTeam_Click" Margin="5"/>
+            <Button Content="Добавить соревнование" Click="AddCompetition_Click" Margin="5"/>
+            <Button Content="Удалить соревнование" Click="RemoveCompetition_Click" Margin="5"/>
+            <Button Content="Сортировать по месту" Click="SortByPlace_Click" Margin="5"/>
+            <Button Content="Экспорт в Excel" Click="ExportToExcel_Click" Margin="5"/>
+            <Button Content="Сохранить" Click="SaveChanges_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

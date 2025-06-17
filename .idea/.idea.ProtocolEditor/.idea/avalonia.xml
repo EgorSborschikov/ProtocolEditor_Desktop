@@ -18,6 +18,10 @@
         <entry key="MainWindow.axaml" value="ProtocolEditor.csproj" />
         <entry key="Table/Table.axaml" value="ProtocolEditor.csproj" />
         <entry key="Table/TableWindow.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/CombineRelay/CombineRelay.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/CompetitionSummary/CompetitionSummary.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/RelayByGroup/RelayByGroup.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/ScoreTable/ScoreTable.axaml" value="ProtocolEditor.csproj" />
       </map>
     </option>
     <option name="workingDirectorySpecification" value="SolutionDirectory" />

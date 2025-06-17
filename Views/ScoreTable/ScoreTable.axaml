@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:ProtocolEditor.ViewModels"
+             x:Class="ProtocolEditor.Views.ScoreTable.ScoreTable" 
+             x:DataType="viewModels:ScoreTableViewModel">
+    
+    <Design.DataContext>
+        <viewModels:ScoreTableViewModel/>
+    </Design.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Margin="10" x:Name="ScoreTabs">
+            <TabItem Header="Другие виды спорта">
+                <DataGrid x:Name="OtherSportScoreDataGrid"
+                          ItemsSource="{Binding OtherSportsScores}"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Место" Binding="{Binding Place}" Width="*"/>
+                        <DataGridTextColumn Header="Очки" Binding="{Binding Points}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Комбинированная эстафета">
+                <DataGrid x:Name="CombineRelayScoreDataGrid"
+                          ItemsSource="{Binding CombinedRelayScores}"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Место" Binding="{Binding Place}" Width="*"/>
+                        <DataGridTextColumn Header="Очки" Binding="{Binding Points}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Эстафета по группам">
+                <DataGrid x:Name="GroupRelayScoreDataGrid"
+                          ItemsSource="{Binding GroupRelayScores}"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Место" Binding="{Binding Place}" Width="*"/>
+                        <DataGridTextColumn Header="Очки" Binding="{Binding Points}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                    HorizontalAlignment="Center" Margin="10" Spacing="10">
+            <Button Content="Добавить запись" Click="AddScoreEntry_Click" Margin="5"/>
+            <Button Content="Удалить запись" Click="RemoveScoreEntry_Click" Margin="5"/>
+            <Button Content="Сохранить" Click="SaveData_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

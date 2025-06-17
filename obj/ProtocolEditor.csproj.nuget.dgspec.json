@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[3.2.0, )"
             },
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.3, )"

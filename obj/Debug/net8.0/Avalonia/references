@@ -30,6 +30,7 @@
 /home/egor/.nuget/packages/harfbuzzsharp/7.3.0.2/lib/net6.0/HarfBuzzSharp.dll
 /home/egor/.nuget/packages/microcom.runtime/0.11.0/lib/net5.0/MicroCom.Runtime.dll
 /home/egor/.nuget/packages/microsoft.netcore.app.ref/8.0.17/ref/net8.0/Microsoft.CSharp.dll
+/home/egor/.nuget/packages/microsoft.data.sqlite.core/9.0.3/lib/net8.0/Microsoft.Data.Sqlite.dll
 /home/egor/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.3/lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
 /home/egor/.nuget/packages/microsoft.entityframeworkcore/9.0.3/lib/net8.0/Microsoft.EntityFrameworkCore.dll
 /home/egor/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.3/lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
@@ -61,6 +62,9 @@
 /home/egor/.nuget/packages/npgsql/9.0.3/lib/net8.0/Npgsql.dll
 /home/egor/.nuget/packages/npgsql.entityframeworkcore.postgresql/9.0.3/lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/egor/.nuget/packages/skiasharp/2.88.8/lib/net6.0/SkiaSharp.dll
+/home/egor/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/lib/netstandard2.0/SQLitePCLRaw.batteries_v2.dll
+/home/egor/.nuget/packages/sqlitepclraw.core/2.1.10/lib/netstandard2.0/SQLitePCLRaw.core.dll
+/home/egor/.nuget/packages/sqlitepclraw.provider.e_sqlite3/2.1.10/lib/net6.0/SQLitePCLRaw.provider.e_sqlite3.dll
 /home/egor/.nuget/packages/microsoft.netcore.app.ref/8.0.17/ref/net8.0/System.AppContext.dll
 /home/egor/.nuget/packages/microsoft.netcore.app.ref/8.0.17/ref/net8.0/System.Buffers.dll
 /home/egor/.nuget/packages/system.codedom/6.0.0/lib/net6.0/System.CodeDom.dll
