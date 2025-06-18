@@ -14,6 +14,8 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        DotNetEnv.Env.Load();
+        
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: true);

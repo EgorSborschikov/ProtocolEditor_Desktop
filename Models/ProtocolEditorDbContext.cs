@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ProtocolEditor.Models;
 
 namespace ProtocolEditor.Entities;
 
@@ -32,11 +34,13 @@ public partial class ProtocolEditorDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = Program.Configuration?.GetConnectionString("DefaultConnection");
-        
-        if (string.IsNullOrEmpty(connectionString))
-            throw new InvalidOperationException("Connection string is missing");
-        
+        var host = Environment.GetEnvironmentVariable("DATABASE_HOST");
+        var port = Environment.GetEnvironmentVariable("DATABASE_PORT");
+        var user = Environment.GetEnvironmentVariable("DATABASE_USER");
+        var password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+        var database = Environment.GetEnvironmentVariable("DATABASE_NAME");
+
+        var connectionString = $"Host={host};Port={port};Database={database};Username={user};Password={password}";
         optionsBuilder.UseNpgsql(connectionString);
     }
 

@@ -5,7 +5,7 @@
         mc:Ignorable="d" 
         d:DesignWidth="800" 
         d:DesignHeight="450"
-        x:Class="ProtocolEditor.Views.Windows.MainWindow"
+        x:Class="ProtocolEditor.Views.Windows.Main.MainWindow"
         Title="Система форматирования протоколов спартакиад">
     
     <Grid>

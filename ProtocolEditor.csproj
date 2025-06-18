@@ -19,6 +19,7 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="DotNetEnv" Version="3.1.1" />
         <PackageReference Include="EntityFramework" Version="6.5.1" />
         <PackageReference Include="EPPlus" Version="8.0.5" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
@@ -47,7 +48,7 @@
         <DependentUpon>RelayByGroup.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Windows\MainWindow.axaml.cs">
+      <Compile Update="Views\Windows\Main\MainWindow.axaml.cs">
         <DependentUpon>MainWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
@@ -55,7 +56,6 @@
 
     <ItemGroup>
       <Folder Include="Views\Pages\" />
-      <Folder Include="Views\Windows\Main\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -69,5 +69,11 @@
       <UpToDateCheckInput Remove="Views\ScoreTable\ScoreTable.axaml" />
       <UpToDateCheckInput Remove="Views\CombineRelay\CombineRelay.axaml" />
       <UpToDateCheckInput Remove="Views\CompetitionSummary\CompetitionSummary.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 </Project>

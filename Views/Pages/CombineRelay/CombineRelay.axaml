@@ -1,26 +1,62 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModels"
+             xmlns:vm="clr-namespace:ProtocolEditor.ViewModels"
              x:Class="ProtocolEditor.Views.Pages.CombineRelay.CombineRelay"
-             x:DataType="viewModel:Team">
+             x:DataType="vm:CombineRelayViewModel">
+    
+    <Design.DataContext>
+        <vm:CombineRelayViewModel/>
+    </Design.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="0" x:Name="CombinedRelayDataGrid" AutoGenerateColumns="False" Margin="10">
+        <DataGrid Grid.Row="0" x:Name="CombinedRelayDataGrid" 
+                  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding Entries}"
+                  Margin="10">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding TeamId}"/>
-                <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}"/>
-                <DataGridTextColumn Header="Время" Binding="{Binding Time}"/>
-                <DataGridTextColumn Header="Место" Binding="{Binding Place}"/>
+                <DataGridTemplateColumn Header="Команда" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TeamName}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox 
+                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                SelectedValue="{Binding IDCommand, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Header="Время" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Time, StringFormat='{}{0:HH:mm:ss}'}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Time}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTextColumn Header="Место" 
+                                    Binding="{Binding Place}"
+                                    Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button Content="Добавить команду" Click="AddCombinedRelayTeam_Click" Margin="5"/>
             <Button Content="Удалить команду" Click="RemoveCombinedRelayTeam_Click" Margin="5"/>
+            <Button Content="Сохранить" Click="SaveChanges_Click" Margin="5"/>
             <Button Content="Экспорт в Excel" Click="ExportCombinedRelayToExcel_Click" Margin="5"/>
         </StackPanel>
     </Grid>

@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ProtocolEditor.Views.Windows.Editor;
 
-namespace ProtocolEditor.Views.Windows;
+namespace ProtocolEditor.Views.Windows.Main;
 
 /// <summary>
 /// Логика взаимодействия с MainWindow.axaml
