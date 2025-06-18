@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModels"
-            x:Class="ProtocolEditor.Views.CompetitionSummary.CompetitionSummary"
+            x:Class="ProtocolEditor.Views.Pages.CompetitionSummary.CompetitionSummary"
             x:DataType="viewModel:Team"> 
     <Grid>
         <Grid.RowDefinitions>

@@ -47,5 +47,27 @@
         <DependentUpon>RelayByGroup.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Windows\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\Pages\" />
+      <Folder Include="Views\Windows\Main\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Pages\CombineRelay\CombineRelay.axaml" />
+      <AdditionalFiles Include="Views\Pages\CompetitionSummary\CompetitionSummary.axaml" />
+      <AdditionalFiles Include="Views\Pages\RelayByGroup\RelayByGroup.axaml" />
+      <AdditionalFiles Include="Views\Pages\ScoreTable\ScoreTable.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\ScoreTable\ScoreTable.axaml" />
+      <UpToDateCheckInput Remove="Views\CombineRelay\CombineRelay.axaml" />
+      <UpToDateCheckInput Remove="Views\CompetitionSummary\CompetitionSummary.axaml" />
     </ItemGroup>
 </Project>

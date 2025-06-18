@@ -8,7 +8,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using ProtocolEditor.ViewModels;
 
-namespace ProtocolEditor.Views.CompetitionSummary;
+namespace ProtocolEditor.Views.Pages.CompetitionSummary;
 
 public partial class CompetitionSummary : UserControl
 {

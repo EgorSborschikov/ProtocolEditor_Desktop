@@ -3,7 +3,7 @@ using Avalonia.Interactivity;
 using ProtocolEditor.Models.Sqlite;
 using ProtocolEditor.ViewModels;
 
-namespace ProtocolEditor.Views.ScoreTable;
+namespace ProtocolEditor.Views.Pages.ScoreTable;
 
 /// <summary>
 /// Логика взаимодействия с ScoreTable.axaml через методы класса ScoreTableViewModel

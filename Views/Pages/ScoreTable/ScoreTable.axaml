@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="clr-namespace:ProtocolEditor.ViewModels"
-             x:Class="ProtocolEditor.Views.ScoreTable.ScoreTable" 
+             x:Class="ProtocolEditor.Views.Pages.ScoreTable.ScoreTable" 
              x:DataType="viewModels:ScoreTableViewModel">
     
     <Design.DataContext>

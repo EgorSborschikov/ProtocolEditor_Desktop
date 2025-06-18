@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace ProtocolEditor.Views.CombineRelay;
+namespace ProtocolEditor.Views.Pages.CombineRelay;
 
 /// <summary>
 /// Логика взаимодействия с CombineRelay.axaml

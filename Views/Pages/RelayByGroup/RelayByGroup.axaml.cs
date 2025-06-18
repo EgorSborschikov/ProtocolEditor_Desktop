@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace ProtocolEditor.Views.RelayByGroup;
+namespace ProtocolEditor.Views.Pages.RelayByGroup;
 
 /// <summary>
 /// Логика взаимодействия с RelayByGroup.axaml

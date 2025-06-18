@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModels"
-             x:Class="ProtocolEditor.Views.RelayByGroup.RelayByGroup"
+             x:Class="ProtocolEditor.Views.Pages.CombineRelay.CombineRelay"
              x:DataType="viewModel:Team">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,7 +14,6 @@
                 <DataGridTextColumn Header="№" Binding="{Binding TeamId}"/>
                 <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}"/>
                 <DataGridTextColumn Header="Время" Binding="{Binding Time}"/>
-                <DataGridTextColumn Header="Очки" Binding="{Binding Points}"/>
                 <DataGridTextColumn Header="Место" Binding="{Binding Place}"/>
             </DataGrid.Columns>
         </DataGrid>
