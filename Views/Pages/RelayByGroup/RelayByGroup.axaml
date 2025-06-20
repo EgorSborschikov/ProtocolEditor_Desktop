@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModel="clr-namespace:ProtocolEditor.ViewModels"
+             xmlns:local="clr-namespace:ProtocolEditor.Services"
              x:Class="ProtocolEditor.Views.Pages.RelayByGroup.RelayByGroup"
              x:DataType="viewModel:RelayByGroupsViewModel">
     <Design.DataContext>
@@ -39,9 +40,11 @@
                                    <DataGrid.Columns>
                                        <DataGridTextColumn Header="№" Binding="{Binding CommandId}" Width="Auto"/>
                                        <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}" Width="*"/>
-                                       <DataGridTextColumn Header="Время" 
-                                                           Binding="{Binding Time, StringFormat='{}{0:HH:mm:ss}'}" 
-                                                           Width="Auto"/>
+                                       <DataGridTextColumn Header="Время" Width="Auto">
+                                           <DataGridTextColumn.Binding>
+                                               <Binding Path="Time" Converter="{x:Static local:TimeConverter.Instance}"/>
+                                           </DataGridTextColumn.Binding>
+                                       </DataGridTextColumn>
                                        <DataGridTextColumn Header="Очки" Binding="{Binding Points}" Width="Auto"/>
                                        <DataGridTextColumn Header="Место" Binding="{Binding Place}" Width="Auto"/>
                                    </DataGrid.Columns>

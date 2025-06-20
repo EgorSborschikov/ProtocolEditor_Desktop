@@ -5,7 +5,7 @@
         Title="Выбор группы"
         Width="300"
         Height="200"
-        x:DataType="viewModels:CommandViewModel">
+        x:DataType="viewModels:GroupViewModel">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,7 +16,13 @@
         <TextBlock Grid.Row="0" Text="Выберите группу:" Margin="0 0 0 1"/>
         
         <ComboBox Grid.Row="1" x:Name="GroupsComboBox"
-                  Margin="0 0 0 20"/>
+                  Margin="0 0 0 20">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="ОК" Width="80" Margin="0 0 10 0" Click="Ok_Click"/>

@@ -42,16 +42,11 @@ public partial class RelayByGroup : UserControl
 
     private async void AddCommand_Click(object sender, RoutedEventArgs e)
     {
-        Console.WriteLine($"ViewModel is null: {viewModel == null}");
-        Console.WriteLine($"ViewModel.Groups is null: {viewModel?.Groups == null}");
-    
         if (viewModel == null) 
         {
             Console.WriteLine("ViewModel не инициализирован");
             return;
         }
-            
-        if (viewModel == null) return;
             
         if (!viewModel.Groups.Any())
         {
@@ -59,12 +54,17 @@ public partial class RelayByGroup : UserControl
         }
             
         var dialog = new GroupSelectionDialog(viewModel.Groups);
-        var result = await dialog.ShowDialog<GroupViewModel?>(new Window());
+
+        var dialogWindow = (Window)VisualRoot;
+        var result = await dialog.ShowDialog<GroupViewModel?>(dialogWindow);
             
-        if (result != null)
+        if (result is null)
         {
-            viewModel.AddCommandToGroup(result.GroupId);
+            Console.WriteLine("Выбор группы отменен");
+            return;
         }
+        
+        viewModel.AddCommandToGroup(result.GroupId);
     }
 
     private void RemoveCommand_Click(object sender, RoutedEventArgs e)
@@ -100,7 +100,9 @@ public partial class RelayByGroup : UserControl
         }
             
         var dialog = new GroupSelectionDialog(otherGroups);
-        var result = await dialog.ShowDialog<GroupViewModel?>(new Window());
+        
+        var dialogWindow = (Window)VisualRoot;
+        var result = await dialog.ShowDialog<GroupViewModel?>(dialogWindow);
             
         if (result != null)
         {

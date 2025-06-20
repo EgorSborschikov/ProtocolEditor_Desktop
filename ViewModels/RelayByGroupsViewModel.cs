@@ -79,7 +79,7 @@ public class RelayByGroupsViewModel : INotifyPropertyChanged
         
         group.Commands.Add(new CommandViewModel
         {
-            Time = DateTime.Now,
+            Time = DateTime.UtcNow,
         });
     }
     
@@ -133,10 +133,14 @@ public class RelayByGroupsViewModel : INotifyPropertyChanged
         {
             foreach (var command in group.Commands)
             {
+                var time = command.Time.Kind == DateTimeKind.Utc 
+                    ? command.Time 
+                    : command.Time.ToUniversalTime();
+                
                 var dbCommand = new CommandsForRelay
                 {
                     IDCommand = command.CommandId,
-                    Time = command.Time,
+                    Time = time,
                     Place = command.Place,
                     Points = command.Points
                 };
@@ -191,6 +195,11 @@ public class GroupViewModel : INotifyPropertyChanged
         {
             Commands.Add(command);
         }
+    }
+
+    public override string ToString()
+    {
+        return GroupName ?? $"Группа {GroupId}";
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -113,7 +113,7 @@ public class CombineRelayViewModel : INotifyPropertyChanged
     {
         Entries.Add(new CombineRelayEntry
         {
-            Time = DateTime.Now // Значение по умолчанию
+            Time = DateTime.UtcNow // Значение по умолчанию
         });
     }
 
