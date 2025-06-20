@@ -6,3 +6,4 @@ obj/
 .env
 *.gitignore
 docker/pgdata/
+SlidesForPitchDeck.html
