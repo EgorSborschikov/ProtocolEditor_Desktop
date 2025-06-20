@@ -11,7 +11,7 @@ using CombineRelay = ProtocolEditor.Models.CombineRelay;
 namespace ProtocolEditor.ViewModels;
 
 /// <summary>
-/// Интерфейс, содержащий логику управления опциями для работы со таблицей комбинированной эстафеты
+/// Интерфейс, содержащий логику управления опциями для работы с таблицей комбинированной эстафеты
 /// </summary>
 
 public class CombineRelayViewModel : INotifyPropertyChanged
