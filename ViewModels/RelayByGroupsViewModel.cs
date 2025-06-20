@@ -64,6 +64,8 @@ public class RelayByGroupsViewModel : INotifyPropertyChanged
 
     public void AddCommandToGroup(int groupId)
     {
+        if (Groups == null) return;
+        
         var group = Groups.FirstOrDefault(g => g.GroupId == groupId);
         if (group == null)
         {
