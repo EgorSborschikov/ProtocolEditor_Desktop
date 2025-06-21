@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:ProtocolEditor.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ProtocolEditor.Views.Pages.Commands.CommandsPage"
+             x:DataType="viewModels:CommandsViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="{Binding ErrorMessage}" Foreground="Red" Margin="10" TextWrapping="Wrap"/>
+        
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Commands}"
+                  
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="ID"
+                    Binding="{Binding IDCommand}"
+                    IsReadOnly="True"/>
+                <DataGridTextColumn
+                    Header="Название команды"
+                    Binding="{Binding CommandName}"
+                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Добавить" Click="AddCommand_Click" Margin="0,0,10,0"/>
+            <Button Content="Удалить" Click="RemoveCommand_Click" Margin="0,0,10,0"/>
+            <Button Content="Сохранить" Click="SaveCommands_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

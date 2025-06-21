@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using ProtocolEditor.Models;
 
-namespace ProtocolEditor.Entities;
+namespace ProtocolEditor.Models;
 
 public partial class Command
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IDCommand { get; set; }
 
     [StringLength(255)]

@@ -55,10 +55,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Views\Pages\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="Views\Pages\CombineRelay\CombineRelay.axaml" />
       <AdditionalFiles Include="Views\Pages\CompetitionSummary\CompetitionSummary.axaml" />
       <AdditionalFiles Include="Views\Pages\RelayByGroup\RelayByGroup.axaml" />

@@ -6,6 +6,7 @@
         xmlns:relayByGroup="clr-namespace:ProtocolEditor.Views.Pages.RelayByGroup"
         xmlns:combineRelay="clr-namespace:ProtocolEditor.Views.Pages.CombineRelay"
         xmlns:scoreTable="clr-namespace:ProtocolEditor.Views.Pages.ScoreTable"
+        xmlns:commands="clr-namespace:ProtocolEditor.Views.Pages.Commands"
         mc:Ignorable="d" 
         d:DesignWidth="800" 
         d:DesignHeight="450"
@@ -33,6 +34,12 @@
                 <TabItem Header="Таблица соответствия очков">
                         <Viewbox Stretch="Uniform" VerticalAlignment="Top">
                                 <scoreTable:ScoreTable Width="800" Height="450"/>
+                        </Viewbox>
+                </TabItem>
+                
+                <TabItem Header="Настройки команд">
+                        <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+                                <commands:CommandsPage Width="800" Height="450"/>
                         </Viewbox>
                 </TabItem>
         </TabControl>

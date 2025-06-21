@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ProtocolEditor.Entities;
+using ProtocolEditor.Models;
 using ProtocolEditor.Views.Pages.CombineRelay;
 using CombineRelay = ProtocolEditor.Models.CombineRelay;
 
