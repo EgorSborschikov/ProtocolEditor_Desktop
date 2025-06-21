@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProtocolEditor.Models;
 using ProtocolEditor.ViewModels;
 using ProtocolEditor.Views.Dialogs;
@@ -13,42 +14,34 @@ namespace ProtocolEditor.Views.Pages.CombineRelay;
 
 public partial class CombineRelay : UserControl
 {
-    private CombineRelayViewModel ViewModel => (CombineRelayViewModel)DataContext!;
+    private CombineRelayViewModel? ViewModel => (CombineRelayViewModel)DataContext!;
     
     public CombineRelay()
     {
         InitializeComponent();
-    }
-
-    private void AddCombinedRelayTeam_Click(object? sender, RoutedEventArgs e)
-    {
-        ViewModel.AddNewEntry();
-    }
-
-    private void RemoveCombinedRelayTeam_Click(object? sender, RoutedEventArgs e)
-    {
-        ViewModel.RemoveSelectedEntry();
-    }
-
-    private async void ChangeTeam_Click(object? sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SelectedEntry == null) return;
         
-        // Создаем диалог выбора команды
-        var dialog = new TeamSelectionDialog(ViewModel.AllCommands);
-        
-        var dialogWindow = (Window)VisualRoot;
-        var result = await dialog.ShowDialog<Command?>(dialogWindow);
-        
-        if (result != null)
+        // Инициализация контекста данных
+        var context = new ProtocolEditorDbContext();
+        DataContext = new CombineRelayViewModel(context);
+            
+        // Подписка на загрузку данных для номеров строк
+        if (CombineRelayDataGrid != null)
         {
-            ViewModel.SelectedEntry.IDCommand = result.IDCommand;
-            ViewModel.SelectedEntry.TeamName = result.CommandName;
+            CombineRelayDataGrid.LoadingRow += (s, e) => 
+            {
+                e.Row.Header = e.Row.GetIndex() + 1;
+            };
         }
     }
+    
 
     private void SaveChanges_Click(object? sender, RoutedEventArgs e)
     {
-        ViewModel.SaveChanges();
+        ViewModel?.SaveChanges();
+    }
+
+    private void SortByPlace_Click(object? sender, RoutedEventArgs e)
+    {
+        ViewModel?.SortByPlace();
     }
 }

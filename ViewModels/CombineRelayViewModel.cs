@@ -14,146 +14,90 @@ namespace ProtocolEditor.ViewModels;
 
 public class CombineRelayViewModel : INotifyPropertyChanged
 {
-    private readonly ProtocolEditorDbContext _context = new();
-    private ObservableCollection<CombineRelayEntry> _entries = new();
-    private List<Command>_allCommands = new();
-    private CombineRelayEntry? _selectedEntry;
-
-    public ObservableCollection<CombineRelayEntry> Entries
-    {
-        get => _entries;
-        set
-        {
-            _entries = value;
-            OnPropertyChanged(nameof(Entries));
-        }
-    }
+    private readonly ProtocolEditorDbContext _context;
     
-    public List<Command> AllCommands => _allCommands;
+    public ObservableCollection<CombineRelayEntry> Entries { get; } = new();
+    public List<Command> AvailableCommands { get; private set; } = new();
 
-    public CombineRelayEntry? SelectedEntry
+    public CombineRelayViewModel(ProtocolEditorDbContext context)
     {
-        get => _selectedEntry;
-        set
-        {
-            _selectedEntry = value;
-            OnPropertyChanged(nameof(SelectedEntry));
-        }
-    }
-
-    public CombineRelayViewModel()
-    {
+        _context = context;
         LoadData();
     }
 
     public void LoadData()
     {
-        try
-        {
-            _allCommands = _context.Commands.ToList();
-            
-            Entries.Clear();
-            var relayData = _context.CombineRelays
-                .AsNoTracking()
-                .Include(cr => cr.IDCommandNavigation)
-                .ToList();
-            
-            Console.WriteLine($"Загружено {relayData.Count} Записей о комбинированных эстафетах");
+        AvailableCommands = _context.Commands.ToList();
+        
+        var existingEntries = _context.CombineRelays
+            .Include(cr => cr.IDCommandNavigation)
+            .ToList();
+        
+        Entries.Clear();
 
-            foreach (var item in relayData)
-            {
-                Console.WriteLine($"Record: ID={item.IDCombineRelay}, CommandID={item.IDCommand}, Time={item.Time}, Place={item.Place}");
-            
-                Entries.Add(new CombineRelayEntry
-                {
-                    IDCombineRelay = item.IDCombineRelay,
-                    IDCommand = item.IDCommand,
-                    TeamName = item.IDCommandNavigation?.CommandName ?? "Команда не найдена",
-                    Time = item.Time,
-                    Place = item.Place,
-                });
-            }
-        }
-        catch (Exception ex)
+        foreach (var command in AvailableCommands)
         {
-            Console.WriteLine($"Ошибка загрузки данных: {ex.Message}");
-            // Добавьте вывод полного стека исключений для отладки
-            Console.WriteLine(ex.StackTrace);
+            var existingEntry = existingEntries.FirstOrDefault(e => e.IDCommand == command.IDCommand);
+            
+            Entries.Add(new CombineRelayEntry
+            {
+                IDCombineRelay = existingEntry?.IDCombineRelay ?? 0,
+                IDCommand = command.IDCommand,
+                TeamName = command.CommandName,
+                Time = existingEntry?.Time,
+                Place = existingEntry?.Place
+            });
         }
     }
 
     public void SaveChanges()
     {
-        try
+        var sortedEntries = Entries
+            .OrderBy(e => e.Place ?? int.MaxValue)
+            .ToList();
+        
+        Entries.Clear();
+        foreach (var entry in sortedEntries)
         {
-            var currentIds = Entries.Select(e => e.IDCombineRelay).ToList();
-            
-            var toRemove = _context.CombineRelays
-                .Where(cr => !currentIds.Contains(cr.IDCombineRelay))
-                .ToList();
-            
-            _context.CombineRelays.RemoveRange(toRemove);
-            
-            // Обновление и добавление
-            foreach (var entry in Entries)
+            Entries.Add(entry);
+        }
+        
+        foreach (var entry in Entries)
+        {
+            if (entry.IDCombineRelay == 0)
             {
-                if (entry.IDCombineRelay == 0) // Новая запись
+                _context.CombineRelays.Add(new CombineRelay
                 {
-                    _context.CombineRelays.Add(new CombineRelay
-                    {
-                        IDCommand = entry.IDCommand,
-                        Time = entry.Time,
-                        Place = entry.Place,
-                    });
-                }
-                else // Существующая запись
+                    IDCommand = entry.IDCommand,
+                    Time = entry.Time?.ToUniversalTime(),
+                    Place = entry.Place
+                });
+            }
+            else
+            {
+                var existing = _context.CombineRelays.Find(entry.IDCombineRelay);
+                if (existing != null)
                 {
-                    var existing = _context.CombineRelays.Find(entry.IDCombineRelay);
-                    if (existing != null)
-                    {
-                        existing.IDCommand = entry.IDCommand;
-                        existing.Time = entry.Time;
-                        existing.Place = entry.Place;
-                    }
+                    existing.Time = entry.Time?.ToUniversalTime();
+                    existing.Place = entry.Place;
                 }
             }
-
-            _context.SaveChanges();
-            LoadData(); // Перезагружаем данные
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка сохранения: {ex.Message}");
-        }
-    }
-    
-    public void AddNewEntry()
-    {
-        Entries.Add(new CombineRelayEntry
-        {
-            Time = DateTime.UtcNow
-        });
-    }
-
-    public void RemoveSelectedEntry()
-    {
-        if (SelectedEntry != null)
-        {
-            Entries.Remove(SelectedEntry);
-        }
-    }
-    
-    // Обновление команды по ID
-    public void UpdateTeam(int entryId, int commandId)
-    {
-        var entry = Entries.FirstOrDefault(e => e.IDCombineRelay == entryId);
-        if (entry == null) return;
         
-        var command = _allCommands.FirstOrDefault(c => c.IDCommand == commandId);
-        if (command != null)
+        _context.SaveChanges();
+        LoadData();
+    }
+
+    public void SortByPlace()
+    {
+        var sorted = Entries
+            .OrderBy(e => e.Place ?? int.MaxValue)
+            .ToList();
+        
+        Entries.Clear();
+        foreach (var entry in sorted)
         {
-            entry.IDCommand = commandId;
-            entry.TeamName = command.CommandName;
+            Entries.Add(entry);
         }
     }
     
@@ -166,13 +110,11 @@ public class CombineRelayViewModel : INotifyPropertyChanged
 
 public class CombineRelayEntry : INotifyPropertyChanged
 {
-    private string _teamName = "Выберите команду";
-    private DateTime? _time;
-    private int? _place;
+    public int IDCombineRelay {get; set;}
+    public int IDCommand {get; set;}
 
-    public int IDCombineRelay { get; set; }
-    public int IDCommand { get; set; }
-    
+    private string _teamName;
+
     public string TeamName
     {
         get => _teamName;
@@ -182,7 +124,9 @@ public class CombineRelayEntry : INotifyPropertyChanged
             OnPropertyChanged(nameof(TeamName));
         }
     }
-    
+
+    private DateTime? _time;
+
     public DateTime? Time
     {
         get => _time;
@@ -192,7 +136,9 @@ public class CombineRelayEntry : INotifyPropertyChanged
             OnPropertyChanged(nameof(Time));
         }
     }
-    
+
+    private int? _place;
+
     public int? Place
     {
         get => _place;
