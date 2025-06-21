@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ProtocolEditor.Views.Dialogs.TeamSelectionDialog"
+        Title="Выбор команды"
+        Width="300"
+        Height="400">
+        
+    <StackPanel>
+        <TextBox x:Name="SearchBox" Watermark="Поиск команды..." Margin="5"/>
+        
+        <ListBox x:Name="CommandsList" Height="300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Margin="5"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Content="ОК" Click="OK_Click" Margin="0,0,10,0" Width="80"/>
+            <Button Content="Отмена" Click="Cancel_Click" Width="80"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

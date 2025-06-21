@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.Extensions.Configuration;
-using ProtocolEditor.Models;
 
-namespace ProtocolEditor.Entities;
+namespace ProtocolEditor.Models;
 
 public partial class ProtocolEditorDbContext : DbContext
 {
@@ -123,20 +119,5 @@ public partial class ProtocolEditorDbContext : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-    {
-        configurationBuilder.Properties<DateTime>()
-            .HaveConversion<DateTimeToUtcConverter>();
-    }
-
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-}
-
-public class DateTimeToUtcConverter : ValueConverter<DateTime, DateTime>
-{
-    public DateTimeToUtcConverter()
-        : base(
-            v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
-            v => DateTime.SpecifyKind(v, DateTimeKind.Utc))
-    {}
 }

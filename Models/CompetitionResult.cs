@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using ProtocolEditor.Models;
 
-namespace ProtocolEditor.Entities;
+namespace ProtocolEditor.Models;
 
 public partial class CompetitionResult
 {
@@ -14,9 +13,9 @@ public partial class CompetitionResult
 
     public int IDCompetition { get; set; }
 
-    public int Place { get; set; }
+    public int? Place { get; set; }
 
-    public int Points { get; set; }
+    public int? Points { get; set; }
 
     [InverseProperty("IDCompetitionResultNavigation")]
     public virtual ICollection<CompetitionSummary> CompetitionSummaries { get; set; } = new List<CompetitionSummary>();

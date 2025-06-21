@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using ProtocolEditor.Models;
 using ProtocolEditor.ViewModels;
+using ProtocolEditor.Views.Dialogs;
 
 namespace ProtocolEditor.Views.Pages.CombineRelay;
 
@@ -11,34 +13,42 @@ namespace ProtocolEditor.Views.Pages.CombineRelay;
 
 public partial class CombineRelay : UserControl
 {
-    private CombineRelayViewModel viewModel => (CombineRelayViewModel)DataContext!;
+    private CombineRelayViewModel ViewModel => (CombineRelayViewModel)DataContext!;
     
     public CombineRelay()
     {
         InitializeComponent();
-        DataContext = new CombineRelayViewModel();
     }
 
     private void AddCombinedRelayTeam_Click(object? sender, RoutedEventArgs e)
     {
-        viewModel.AddNewEntry();
+        ViewModel.AddNewEntry();
     }
 
     private void RemoveCombinedRelayTeam_Click(object? sender, RoutedEventArgs e)
     {
-        if (CombinedRelayDataGrid.SelectedItem is CombineRelayEntry selected)
+        ViewModel.RemoveSelectedEntry();
+    }
+
+    private async void ChangeTeam_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedEntry == null) return;
+        
+        // Создаем диалог выбора команды
+        var dialog = new TeamSelectionDialog(ViewModel.AllCommands);
+        
+        var dialogWindow = (Window)VisualRoot;
+        var result = await dialog.ShowDialog<Command?>(dialogWindow);
+        
+        if (result != null)
         {
-            viewModel.RemoveEntry(selected);
+            ViewModel.SelectedEntry.IDCommand = result.IDCommand;
+            ViewModel.SelectedEntry.TeamName = result.CommandName;
         }
     }
-    
+
     private void SaveChanges_Click(object? sender, RoutedEventArgs e)
     {
-        viewModel.SaveChanges();
-    }
-    
-    private void ExportCombinedRelayToExcel_Click(object? sender, RoutedEventArgs e)
-    {
-        throw new System.NotImplementedException();
+        ViewModel.SaveChanges();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ProtocolEditor.Entities;
+using ProtocolEditor.Models;
 using ProtocolEditor.ViewModels;
 using ProtocolEditor.Views.Dialogs;
 

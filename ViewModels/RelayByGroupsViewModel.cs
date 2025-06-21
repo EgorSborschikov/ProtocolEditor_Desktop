@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ProtocolEditor.Entities;
 using ProtocolEditor.Models;
 
 namespace ProtocolEditor.ViewModels;

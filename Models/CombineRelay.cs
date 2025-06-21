@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using ProtocolEditor.Entities;
 
 namespace ProtocolEditor.Models;
 
@@ -15,11 +15,11 @@ public partial class CombineRelay
     public int IDCommand { get; set; }
 
     [Precision(6, 0)]
-    public DateTime Time { get; set; }
+    public DateTime? Time { get; set; }
 
-    public int Place { get; set; }
+    public int? Place { get; set; }
 
     [ForeignKey("IDCommand")]
     [InverseProperty("CombineRelays")]
-    public virtual Command IDCommandNavigation { get; set; } = null!;
+    public virtual Command? IDCommandNavigation { get; set; }
 }

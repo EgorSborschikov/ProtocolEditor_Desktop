@@ -2,9 +2,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using Avalonia.Controls.Notifications;
-using ProtocolEditor.Entities;
 using ProtocolEditor.Models;
+using ProtocolEditorDbContext = ProtocolEditor.Models.ProtocolEditorDbContext;
 
 namespace ProtocolEditor.ViewModels;
 

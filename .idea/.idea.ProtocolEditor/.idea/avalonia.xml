@@ -21,8 +21,10 @@
         <entry key="Views/CombineRelay/CombineRelay.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/CompetitionSummary/CompetitionSummary.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Dialogs/GroupSelectionDialog.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/Dialogs/TeamSelectionDialog.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Pages/CombineRelay/CombineRelay.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Pages/Commands/Commands.axaml" value="ProtocolEditor.csproj" />
+        <entry key="Views/Pages/Commands/CommandsPage.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Pages/CompetitionSummary/CompetitionSummary.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Pages/RelayByGroup/RelayByGroup.axaml" value="ProtocolEditor.csproj" />
         <entry key="Views/Pages/ScoreTable/ScoreTable.axaml" value="ProtocolEditor.csproj" />

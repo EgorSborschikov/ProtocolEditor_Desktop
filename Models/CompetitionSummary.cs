@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ProtocolEditor.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProtocolEditor.Models;
 
@@ -14,9 +16,9 @@ public partial class CompetitionSummary
 
     public int IDCompetitionResult { get; set; }
 
-    public int TotalPoints { get; set; }
+    public int? TotalPoints { get; set; }
 
-    public int Place { get; set; }
+    public int? Place { get; set; }
 
     [ForeignKey("IDCommand")]
     [InverseProperty("CompetitionSummaries")]
