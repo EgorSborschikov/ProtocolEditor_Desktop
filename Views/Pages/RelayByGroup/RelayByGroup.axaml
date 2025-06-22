@@ -14,54 +14,43 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding Groups}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Gray" 
-                                BorderThickness="0 0 0 1" 
-                                Margin="0 0 0 1" 
-                                Padding="0 0 0 5">
-                           <StackPanel>
-                               <!-- Заголовок группы с кнопкой перемещения -->
-                               <DockPanel LastChildFill="True" Margin="10 5">
-                                   <Button DockPanel.Dock="Right" Content="Переместить" 
-                                           Click="MoveCommandFromGroup_Click" Tag="{Binding}"
-                                           Padding="10 2" Margin="5 0 0 0"/>
-                                    
-                                   <TextBlock Text="{Binding GroupName}" 
-                                              FontSize="16" FontWeight="Bold"/>
-                               </DockPanel>
-                               
-                               <!-- Таблица команд в группе -->
-                               <DataGrid ItemsSource="{Binding Commands}" AutoGenerateColumns="False"
-                                         SelectionChanged="DataGrid_SelectionChanged"
-                                         Margin="10,0,10,10">
-                                   <DataGrid.Columns>
-                                       <DataGridTextColumn Header="№" Binding="{Binding CommandId}" Width="Auto"/>
-                                       <DataGridTextColumn Header="Команда" Binding="{Binding TeamName}" Width="*"/>
-                                       <DataGridTextColumn Header="Время" Width="Auto">
-                                           <DataGridTextColumn.Binding>
-                                               <Binding Path="Time" Converter="{x:Static local:TimeConverter.Instance}"/>
-                                           </DataGridTextColumn.Binding>
-                                       </DataGridTextColumn>
-                                       <DataGridTextColumn Header="Очки" Binding="{Binding Points}" Width="Auto"/>
-                                       <DataGridTextColumn Header="Место" Binding="{Binding Place}" Width="Auto"/>
-                                   </DataGrid.Columns>
-                               </DataGrid>
-                           </StackPanel> 
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <DataGrid Grid.Row="0"
+                  x:Name="RelayGroupsDataGrid"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Entries}"
+                  SelectedItem="{Binding SelectedEntry}"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" 
+                                    Binding="{Binding Place}" 
+                                    Width="50"
+                                    IsReadOnly="True"/>
+                
+                <DataGridTextColumn Header="Команда" 
+                                    Binding="{Binding TeamName}" 
+                                    IsReadOnly="True"
+                                    Width="*"/>
+                
+                <DataGridTextColumn Header="Время" 
+                                    Binding="{Binding Time, StringFormat='HH:mm:ss'}" 
+                                    Width="100"/>
+                
+                <DataGridTextColumn Header="Место" 
+                                    Binding="{Binding Place}" 
+                                    Width="80"/>
+                
+                <DataGridTextColumn Header="Очки" 
+                                    Binding="{Binding Points}" 
+                                    Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Добавить группу" Click="AddGroup_Click" Margin="5"/>
-            <Button Content="Добавить команду" Click="AddCommand_Click" Margin="5"/>
-            <Button Content="Удалить команду" Click="RemoveCommand_Click" Margin="5"/>
+            <Button Content="Добавить команду" Click="AddRelayGroupTeam_Click" Margin="5"/>
+            <Button Content="Удалить команду" Click="RemoveRelayGroupTeam_Click" Margin="5"/>
+            <Button Content="Изменить команду" Click="ChangeTeam_Click" Margin="5"/>
+            <Button Content="Сортировать по месту" Click="SortByPlace_Click" Margin="5"/>
             <Button Content="Сохранить" Click="SaveChanges_Click" Margin="5"/>
-            <Button Content="Экспорт в Excel" Click="ExportCombinedRelayToExcel_Click" Margin="5"/>
         </StackPanel>
     </Grid>
 </UserControl>

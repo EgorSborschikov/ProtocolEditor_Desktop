@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,150 +14,181 @@ namespace ProtocolEditor.ViewModels;
 
 public class RelayByGroupsViewModel : INotifyPropertyChanged
 {
-    private readonly ProtocolEditorDbContext _context;
-    
-    public ObservableCollection<GroupViewModel> Groups { get; } = new ();
-    public CommandViewModel? SelectedCommand { get; set; }
+    private readonly ProtocolEditorDbContext _context = new();
+    private ObservableCollection<RelayGroupEntry> _entries = new();
+    private List<Command> _allCommands = new();
+    private RelayGroupEntry? _selectedEntry;
 
-    public RelayByGroupsViewModel(ProtocolEditorDbContext context)
+    public ObservableCollection<RelayGroupEntry> Entries
     {
-        _context = context;
+        get => _entries;
+        set
+        {
+            _entries = value;
+            OnPropertyChanged(nameof(Entries));
+        }
+    }
+    
+    public List<Command> AllCommands => _allCommands;
+
+    public RelayGroupEntry? SelectedEntry
+    {
+        get => _selectedEntry;
+        set
+        {
+            _selectedEntry = value;
+            OnPropertyChanged(nameof(SelectedEntry));
+        }
+    }
+
+    public RelayByGroupsViewModel()
+    {
         LoadData();
     }
 
     public void LoadData()
     {
-        Groups.Clear();
-
-        var dbGroups = _context.GroupsForRelays
-            .Include(g => g.IDCommandForRelayNavigation)
-            .ThenInclude(c => c.IDCommandNavigation)
-            .ToList()
-            .GroupBy(g => g.IDGroupForRelay);
-
-        foreach (var group in dbGroups)
+        try
         {
-            var groupViewModel = new GroupViewModel
-            {
-                GroupId = group.Key,
-            };
+            _allCommands = _context.Commands.ToList();
+            Console.WriteLine($"Загружено команд: {_allCommands.Count}");
+            
+            Entries.Clear();
+            var relayData = _context.CommandsForRelays
+                .Include(cfr => cfr.IDCommandNavigation)
+                .ToList();
+            
+            Console.WriteLine($"Загружено записей эстафеты: {relayData.Count}");
 
-            foreach (var item in group)
+            foreach (var item in relayData)
             {
-                var command = item.IDCommandForRelayNavigation;
-                groupViewModel.Commands.Add(new CommandViewModel
+                Console.WriteLine($"ID: {item.IDCommandForRelay}, Команда: {item.IDCommandNavigation?.CommandName}");
+                
+                Entries.Add(new RelayGroupEntry
                 {
-                    Id = command.IDCommandForRelay,
-                    CommandId = command.IDCommand,
-                    TeamName = command.IDCommandNavigation?.CommandName ?? "Неизвестно",
-                    
-                    Time = command.Time,
-                    Points = command.Points,
-                    Place = command.Place,
+                    IDCommandForRelay = item.IDCommandForRelay,
+                    IDCommand = item.IDCommand,
+                    TeamName = item.IDCommandNavigation?.CommandName ?? "Команда не найдена",
+                    Time = item.Time,
+                    Place = item.Place,
+                    Points = item.Points
                 });
             }
-            
-            groupViewModel.SortCommands();
-            Groups.Add(groupViewModel);
+            Console.WriteLine($"Добавлено в коллекцию: {Entries.Count} элементов");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка загрузки данных: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
         }
     }
 
-    public void AddCommandToGroup(int groupId)
-    {
-        if (Groups == null) return;
-        
-        var group = Groups.FirstOrDefault(g => g.GroupId == groupId);
-        if (group == null)
-        {
-            group = new GroupViewModel
-            {
-                GroupId = groupId,
-                GroupName = $"Группа{groupId}"
-            };
-            Groups.Add(group);
-        }
-        
-        group.Commands.Add(new CommandViewModel
-        {
-            Time = DateTime.UtcNow,
-        });
-    }
-    
-    public void RemoveCommand(CommandViewModel command)
-    {
-        foreach (var group in Groups)
-        {
-            if (group.Commands.Contains(command))
-            {
-                group.Commands.Remove(command);
-                return;
-            }
-        }
-    }
-    
-    public void MoveCommandToGroup(CommandViewModel command, int targetGroupId)
-    {
-        // Удаляем команду из текущей группы
-        foreach (var group in Groups)
-        {
-            if (group.Commands.Contains(command))
-            {
-                group.Commands.Remove(command);
-                break;
-            }
-        }
-            
-        // Добавляем в новую группу
-        var targetGroup = Groups.FirstOrDefault(g => g.GroupId == targetGroupId);
-        if (targetGroup == null)
-        {
-            targetGroup = new GroupViewModel 
-            { 
-                GroupId = targetGroupId,
-                GroupName = $"Группа {targetGroupId}"
-            };
-            Groups.Add(targetGroup);
-        }
-            
-        targetGroup.Commands.Add(command);
-    }
-    
     public void SaveChanges()
     {
-        // Удаление всех существующих данных
-        _context.GroupsForRelays.RemoveRange(_context.GroupsForRelays);
-        _context.CommandsForRelays.RemoveRange(_context.CommandsForRelays);
-            
-        // Сохранение новых данных
-        foreach (var group in Groups)
+        try
         {
-            foreach (var command in group.Commands)
+            var currentIds = Entries.Select(e => e.IDCommandForRelay)
+                .ToList();
+            
+            var toRemove = _context.CommandsForRelays
+                .Where(cfr => !currentIds.Contains(cfr.IDCommandForRelay))
+                .ToList();
+            
+            _context.CommandsForRelays.RemoveRange(toRemove);
+            
+            foreach (var entry in Entries)
             {
-                var time = command.Time.Kind == DateTimeKind.Utc 
-                    ? command.Time 
-                    : command.Time.ToUniversalTime();
-                
-                var dbCommand = new CommandsForRelay
+                if (entry.IDCommandForRelay == 0) // Новая запись
                 {
-                    IDCommand = command.CommandId,
-                    Time = time,
-                    Place = command.Place,
-                    Points = command.Points
-                };
-                    
-                _context.CommandsForRelays.Add(dbCommand);
-                _context.SaveChanges(); // Для получения ID
-                    
-                _context.GroupsForRelays.Add(new GroupsForRelay
+                    _context.CommandsForRelays.Add(new CommandsForRelay
+                    {
+                        IDCommand = entry.IDCommand,
+                        Time = entry.Time,
+                        Place = entry.Place,
+                        Points = entry.Points
+                    });
+                }
+                else // Существующая запись
                 {
-                    IDGroupForRelay = group.GroupId,
-                    IDCommandForRelay = dbCommand.IDCommandForRelay
-                });
+                    var existing = _context.CommandsForRelays.Find(entry.IDCommandForRelay);
+                    if (existing != null)
+                    {
+                        existing.IDCommand = entry.IDCommand;
+                        existing.Time = entry.Time;
+                        existing.Place = entry.Place;
+                        existing.Points = entry.Points;
+                    }
+                }
+            }
+            
+            _context.SaveChanges();
+            LoadData();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка сохранения: {ex.Message}");
+        
+            // Добавляем вывод внутреннего исключения
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Внутренняя ошибка: {ex.InnerException.Message}");
+            
+                // Для DbUpdateException выводим дополнительные детали
+                if (ex.InnerException is DbUpdateException dbEx)
+                {
+                    foreach (var entry in dbEx.Entries)
+                    {
+                        Console.WriteLine($"Ошибка в сущности: {entry.Entity.GetType().Name}");
+                    
+                        if (entry.State == EntityState.Added)
+                            Console.WriteLine("Операция: Добавление");
+                        else if (entry.State == EntityState.Modified)
+                            Console.WriteLine("Операция: Обновление");
+                    
+                        // Выводим значения свойств
+                        foreach (var prop in entry.CurrentValues.Properties)
+                        {
+                            var value = entry.CurrentValues[prop];
+                            Console.WriteLine($"{prop.Name}: {value ?? "null"}");
+                        }
+                    }
+                }
             }
         }
-            
-        _context.SaveChanges();
-        LoadData(); // Перезагружаем данные
+    }
+    
+    public void AddNewEntry()
+    {
+        Entries.Add(new RelayGroupEntry());
+    }
+
+    public void RemoveSelectedEntry()
+    {
+        if (SelectedEntry != null)
+        {
+            Entries.Remove(SelectedEntry);
+        }
+    }
+
+    public void UpdateTeam(int entryId, int commandId)
+    {
+        var entry = Entries.FirstOrDefault(e => e.IDCommandForRelay == entryId);
+        if (entry == null) return;
+        
+        var command = _allCommands.FirstOrDefault(c => c.IDCommand == commandId);
+        if (command != null)
+        {
+            entry.IDCommand = commandId;
+            entry.TeamName = command.CommandName;
+        }
+    }
+    
+    public void SortByPlace()
+    {
+        var sorted = new ObservableCollection<RelayGroupEntry>(
+            Entries.OrderBy(e => e.Place ?? int.MaxValue));
+        
+        Entries = sorted;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -170,50 +202,16 @@ public class RelayByGroupsViewModel : INotifyPropertyChanged
 /// <summary>
 /// Вспомогательные классы (интерфейсы)
 /// </summary>
-public class GroupViewModel : INotifyPropertyChanged
+public class RelayGroupEntry : INotifyPropertyChanged
 {
-    private string _groupName;
-    public string GroupName
-    {
-        get => _groupName;
-        set
-        {
-            _groupName = value;
-            OnPropertyChanged(nameof(GroupName));
-        }
-    }
-    
-    public int GroupId { get; set; }
-    public ObservableCollection<CommandViewModel> Commands { get; } = new();
-        
-    public void SortCommands()
-    {
-        var sorted = Commands.OrderBy(c => c.Place).ToList();
-        Commands.Clear();
-        foreach (var command in sorted)
-        {
-            Commands.Add(command);
-        }
-    }
+    private string _teamName = "Выберите команды";
+    private DateTime? _time;
+    private int? _place;
+    private int? _points;
 
-    public override string ToString()
-    {
-        return GroupName ?? $"Группа {GroupId}";
-    }
+    public int IDCommandForRelay {get; set;}
+    public int IDCommand {get; set;}
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-}
-
-public class CommandViewModel : INotifyPropertyChanged
-{
-    public int Id { get; set; }
-    public int CommandId { get; set; }
-        
-    private string _teamName;
     public string TeamName
     {
         get => _teamName;
@@ -223,9 +221,8 @@ public class CommandViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(TeamName));
         }
     }
-        
-    private DateTime _time;
-    public DateTime Time
+
+    public DateTime? Time
     {
         get => _time;
         set
@@ -234,26 +231,24 @@ public class CommandViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Time));
         }
     }
-        
-    private int _points;
-    public int Points
-    {
-        get => _points;
-        set
-        {
-            _points = value;
-            OnPropertyChanged(nameof(Points));
-        }
-    }
-        
-    private int _place;
-    public int Place
+
+    public int? Place
     {
         get => _place;
         set
         {
             _place = value;
             OnPropertyChanged(nameof(Place));
+        }
+    }
+    
+    public int? Points
+    {
+        get => _points;
+        set
+        {
+            _points = value;
+            OnPropertyChanged(nameof(Points));
         }
     }
 

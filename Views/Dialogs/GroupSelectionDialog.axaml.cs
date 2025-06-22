@@ -9,8 +9,8 @@ namespace ProtocolEditor.Views.Dialogs;
 
 public partial class GroupSelectionDialog : Window
 {
-    public GroupViewModel? SelectedGroup { get; private set; }
-    private GroupViewModel viewModel => (GroupViewModel)DataContext!;
+    public RelayGroupEntry? SelectedGroup { get; private set; }
+    private RelayGroupEntry Entry => (RelayGroupEntry)DataContext!;
     
     public GroupSelectionDialog()
     {
@@ -18,7 +18,7 @@ public partial class GroupSelectionDialog : Window
         DataContext = this;
     }
 
-    public GroupSelectionDialog(ObservableCollection<GroupViewModel> groups) : this()
+    public GroupSelectionDialog(ObservableCollection<RelayGroupEntry> groups) : this()
     {
         GroupsComboBox.ItemsSource = groups.ToList();
 
@@ -30,7 +30,7 @@ public partial class GroupSelectionDialog : Window
 
     private void Ok_Click(object? sender, RoutedEventArgs e)
     {
-        SelectedGroup = GroupsComboBox.SelectedItem as GroupViewModel;
+        SelectedGroup = GroupsComboBox.SelectedItem as RelayGroupEntry;
 
         if (SelectedGroup != null)
         {

@@ -15,117 +15,48 @@ namespace ProtocolEditor.Views.Pages.RelayByGroup;
 
 public partial class RelayByGroup : UserControl
 {
-    private RelayByGroupsViewModel viewModel => (RelayByGroupsViewModel)DataContext!;
+    private RelayByGroupsViewModel ViewModel => (RelayByGroupsViewModel)DataContext!;
     
     public RelayByGroup()
     {
         InitializeComponent();
-        var context = new ProtocolEditorDbContext();
-        DataContext = new RelayByGroupsViewModel(context);
+        DataContext = new RelayByGroupsViewModel();
+        Console.WriteLine("DataContext установлен");
     }
     
-    private void AddGroup_Click(object? sender, RoutedEventArgs e)
+    private void AddRelayGroupTeam_Click(object? sender, RoutedEventArgs e)
     {
-        if (viewModel == null) return;
-            
-        // Проверяем наличие групп безопасно
-        int newGroupId = viewModel.Groups.Any() 
-            ? viewModel.Groups.Max(g => g.GroupId) + 1 
-            : 1;
-            
-        viewModel.Groups.Add(new GroupViewModel 
-        { 
-            GroupId = newGroupId,
-            GroupName = $"Группа {newGroupId}"
-        });
+        ViewModel.AddNewEntry();
     }
 
-    private async void AddCommand_Click(object sender, RoutedEventArgs e)
+    private void RemoveRelayGroupTeam_Click(object? sender, RoutedEventArgs e)
     {
-        if (viewModel == null) 
-        {
-            Console.WriteLine("ViewModel не инициализирован");
-            return;
-        }
-            
-        if (!viewModel.Groups.Any())
-        {
-            AddGroup_Click(sender, e);
-        }
-            
-        var dialog = new GroupSelectionDialog(viewModel.Groups);
+        ViewModel.RemoveSelectedEntry();
+    }
 
-        var dialogWindow = (Window)VisualRoot;
-        var result = await dialog.ShowDialog<GroupViewModel?>(dialogWindow);
-            
-        if (result is null)
-        {
-            Console.WriteLine("Выбор группы отменен");
-            return;
-        }
+    private async void ChangeTeam_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedEntry == null) return;
         
-        viewModel.AddCommandToGroup(result.GroupId);
-    }
-
-    private void RemoveCommand_Click(object sender, RoutedEventArgs e)
-    {
-        if (viewModel?.SelectedCommand != null)
-        {
-            viewModel.RemoveCommand(viewModel.SelectedCommand);
-        }
-    }
-
-    private async void MoveCommandFromGroup_Click(object sender, RoutedEventArgs e)
-    {
-        if (viewModel?.SelectedCommand == null) return;
-            
-        var currentGroup = (GroupViewModel)((Button)sender).Tag;
-            
-        var otherGroups = new ObservableCollection<GroupViewModel>(
-            viewModel.Groups.Where(g => g.GroupId != currentGroup.GroupId)
-        );
-            
-        if (!otherGroups.Any()) 
-        {
-            // Если нет других групп, создаем новую
-            int newGroupId = viewModel.Groups.Max(g => g.GroupId) + 1;
-            var newGroup = new GroupViewModel 
-            { 
-                GroupId = newGroupId,
-                GroupName = $"Группа {newGroupId}"
-            };
-                
-            viewModel.Groups.Add(newGroup);
-            otherGroups.Add(newGroup);
-        }
-            
-        var dialog = new GroupSelectionDialog(otherGroups);
+        var dialog = new TeamSelectionDialog(ViewModel.AllCommands);
         
         var dialogWindow = (Window)VisualRoot;
-        var result = await dialog.ShowDialog<GroupViewModel?>(dialogWindow);
-            
+        var result = await dialog.ShowDialog<Command?>(dialogWindow);
+        
         if (result != null)
         {
-            viewModel.MoveCommandToGroup(viewModel.SelectedCommand, result.GroupId);
+            ViewModel.SelectedEntry.IDCommand = result.IDCommand;
+            ViewModel.SelectedEntry.TeamName = result.CommandName;
         }
     }
 
-    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void SortByPlace_Click(object? sender, RoutedEventArgs e)
     {
-        if (viewModel != null && e.AddedItems.Count > 0 && e.AddedItems[0] is CommandViewModel command)
-        {
-            viewModel.SelectedCommand = command;
-        }
+        ViewModel.SortByPlace();
     }
 
-    private void SaveChanges_Click(object sender, RoutedEventArgs e)
+    private void SaveChanges_Click(object? sender, RoutedEventArgs e)
     {
-        viewModel?.SaveChanges();
-    }
-        
-
-    private void ExportCombinedRelayToExcel_Click(object? sender, RoutedEventArgs e)
-    {
-        throw new System.NotImplementedException();
+        ViewModel.SaveChanges();
     }
 }

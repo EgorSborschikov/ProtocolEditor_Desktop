@@ -5,7 +5,7 @@
         Title="Выбор группы"
         Width="300"
         Height="200"
-        x:DataType="viewModels:GroupViewModel">
+        x:DataType="viewModels:RelayGroupEntry">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

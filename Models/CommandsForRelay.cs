@@ -14,12 +14,13 @@ public partial class CommandsForRelay
 
     public int IDCommand { get; set; }
 
+    [Column(TypeName = "timestamp with time zone")]
     [Precision(6, 0)]
-    public DateTime Time { get; set; }
+    public DateTime? Time { get; set; }
 
-    public int Place { get; set; }
+    public int? Place { get; set; }
 
-    public int Points { get; set; }
+    public int? Points { get; set; }
 
     [InverseProperty("IDCommandForRelayNavigation")]
     public virtual ICollection<GroupsForRelay> GroupsForRelays { get; set; } = new List<GroupsForRelay>();
