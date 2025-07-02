@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -7,36 +9,66 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using ProtocolEditor.ViewModels;
+using ProtocolEditor.Models;
 
 namespace ProtocolEditor.Views.Pages.CompetitionSummary;
 
 public partial class CompetitionSummary : UserControl
 {
-    private CompetitionSummaryViewModel viewModel;
+    private CompetitionSummaryViewModel? _viewModel;
+    private CompetitionSummaryViewModel? ViewModel => _viewModel ??= DataContext as CompetitionSummaryViewModel;
     private int competitionCounter = 0;
     public CompetitionSummary()
     {
         InitializeComponent();
-        
-        viewModel = new CompetitionSummaryViewModel();
-        DataContext = viewModel;
-        
-        CompetitionDataGrid.ItemsSource = viewModel.Teams;
-        
-        viewModel.AddTeam();
+        DataContextChanged += OnDataContextChanged;
     }
     
-    private void AddTeam_Click(object? sender, RoutedEventArgs e)
+    private void OnDataContextChanged(object? sender, EventArgs e)
     {
-        viewModel.AddTeam();
+        if (ViewModel != null)
+        {
+            ViewModel.UpdateColumnsRequested += UpdateCompetitionColumns;
+            ViewModel.Initialize();
+        }
     }
     
     private void AddCompetition_Click(object? sender, RoutedEventArgs e)
     {
-        viewModel.AddCompetition();
-        competitionCounter++;
+        if (ViewModel == null) return;
+        
+        ViewModel.AddCompetition();
+        UpdateCompetitionColumns();
+    }
+    
+    private void UpdateCompetitionColumns()
+    {
+        // Удаляем все столбцы соревнований
+        var columnsToRemove = CompetitionDataGrid.Columns
+            .Where(c => c.Tag?.Equals("CompetitionColumn") == true)
+            .ToList();
+        
+        foreach (var column in columnsToRemove)
+        {
+            CompetitionDataGrid.Columns.Remove(column);
+        }
 
-        int insertIndex = 2;
+        // Добавляем новые столбцы для всех соревнований
+        if (ViewModel != null)
+        {
+            for (int i = 0; i < ViewModel.Competitions.Count; i++)
+            {
+                AddCompetitionColumn(i);
+            }
+        }
+    }
+    
+    private void AddCompetitionColumn(int competitionIndex)
+    {
+        if (ViewModel == null || competitionIndex >= ViewModel.Competitions.Count) return;
+        
+        var competition = ViewModel.Competitions[competitionIndex];
+        int insertIndex = 2; // После колонок "№" и "Команда"
 
         var headerContainer = new StackPanel
         {
@@ -47,7 +79,7 @@ public partial class CompetitionSummary : UserControl
         
         headerContainer.Children.Add(new TextBlock
         {
-            Text = $"Соревнование {competitionCounter}\nM",
+            Text = $"\nМ",
             TextAlignment = TextAlignment.Center,
             Width = 60,
             Padding = new Thickness(5)
@@ -55,15 +87,15 @@ public partial class CompetitionSummary : UserControl
         
         headerContainer.Children.Add(new Rectangle
         {
-            Fill = Brushes.Transparent,
+            Fill = Brushes.Gray,
             Width = 1,
             Margin = new Thickness(0, 5),
-            VerticalAlignment = VerticalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Stretch
         });
         
         headerContainer.Children.Add(new TextBlock
         {
-            Text = $"Соревнование {competitionCounter}\nО",
+            Text = $"\nО",
             TextAlignment = TextAlignment.Center,
             Width = 60,
             Padding = new Thickness(5)
@@ -72,27 +104,30 @@ public partial class CompetitionSummary : UserControl
         var column = new DataGridTemplateColumn
         {
             Header = headerContainer,
-            CellTemplate = new FuncDataTemplate<object>((obj,scope) =>
+            Tag = "CompetitionColumn",
+            CellTemplate = new FuncDataTemplate<TeamViewModel>((team, scope) =>
             {
+                if (team == null) return null;
+                
                 var cellContainer = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     Spacing = 0
                 };
 
-                var placeBook = new TextBlock
+                var placeBlock = new TextBlock
                 {
                     Width = 60,
                     Padding = new Thickness(5),
                     TextAlignment = TextAlignment.Center,
-                    [!TextBlock.TextProperty] = new Binding($"Competition[{competitionCounter - 1}].Place")
+                    [!TextBlock.TextProperty] = new Binding($"CompetitionPlaces[{competition.IDCompetition}]")
                 };
                 
                 var separator = new Rectangle 
-                {
-                    Fill = Brushes.LightGray,
-                    Width = 1,
-                    VerticalAlignment = VerticalAlignment.Stretch
+                { 
+                    Fill = Brushes.LightGray, 
+                    Width = 1, 
+                    VerticalAlignment = VerticalAlignment.Stretch 
                 };
                 
                 var pointsBlock = new TextBlock
@@ -100,10 +135,10 @@ public partial class CompetitionSummary : UserControl
                     Width = 60,
                     Padding = new Thickness(5),
                     TextAlignment = TextAlignment.Center,
-                    [!TextBlock.TextProperty] = new Binding($"Competitions[{competitionCounter - 1}].Points")
+                    [!TextBlock.TextProperty] = new Binding($"CompetitionPoints[{competition.IDCompetition}]")
                 };
-
-                cellContainer.Children.Add(placeBook);
+                
+                cellContainer.Children.Add(placeBlock);
                 cellContainer.Children.Add(separator);
                 cellContainer.Children.Add(pointsBlock);
                 
@@ -111,7 +146,7 @@ public partial class CompetitionSummary : UserControl
             })
         };
         
-        CompetitionDataGrid.Columns.Insert(insertIndex, column);
+        CompetitionDataGrid.Columns.Insert(insertIndex + competitionIndex, column);
     }
 
     private void SortByPlace_Click(object? sender, RoutedEventArgs e)
@@ -122,15 +157,6 @@ public partial class CompetitionSummary : UserControl
     private void ExportToExcel_Click(object? sender, RoutedEventArgs e)
     {
         throw new System.NotImplementedException();
-    }
-
-
-    private void RemoveTeam_Click(object? sender, RoutedEventArgs e)
-    {
-        if (CompetitionDataGrid.SelectedItem is Team selectedTeam)
-        {
-            viewModel.Teams.Remove(selectedTeam);
-        }
     }
 
     private void RemoveCompetition_Click(object? sender, RoutedEventArgs e)
